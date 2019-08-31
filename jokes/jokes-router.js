@@ -1,11 +1,12 @@
 const axios = require('axios');
 
 const router = require('express').Router();
-const restricted = require('../auth/authenticate-middleware.js');
 
-router.get('/', restricted, (req, res) => {
+router.get('/', (req, res) => {
   const requestOptions = {
-    headers: { accept: 'application/json' }
+    headers: {
+      accept: 'application/json'
+    }
   };
 
   axios
