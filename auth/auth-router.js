@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const Auth = require('./authDb.js');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const genToken = require('./genToken.js');
 
 router.post('/register', async (req, res) => {
   // implement registration
@@ -12,7 +12,7 @@ router.post('/register', async (req, res) => {
 
   try {
     const newUser = await Auth.add(user);
-    const token = generateToken(newUser);
+    const token = genToken(newUser);
     res.status(201).json({ message: `Welcome ${user.username}`, token });
   } catch (err) {
     console.log(err);
@@ -28,7 +28,7 @@ router.post('/login', (req, res) => {
       .first()
       .then(user => {
         if (user && bcrypt.compareSync(password, user.password)) {
-          const token = generateToken(user);
+          const token = genToken(user);
 
           res.status(200).json({ message: `Welcome ${user.username}`, token });
         } else {
